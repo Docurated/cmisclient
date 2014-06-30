@@ -26,7 +26,23 @@ class CmisClient
         CMIS_ACL_TYPE = 'application/cmisacl+xml'
 
         def children_by_tag_ns(node, ns, tag)
-            node.xpath("//ns:#{tag}", { 'ns' => ns })
+            node.xpath(".//ns:#{tag}", { 'ns' => ns })
+        end
+
+        def parse_prop_value(value, node_name)
+            if node_name == 'propertyId' || node_name == 'propertyString'
+                value
+            elsif node_name == 'propertyBoolean'
+                { 'false' => false, 'true' => true }[value.downcase]
+            elsif node_name == 'propertyInteger'
+                value.to_i
+            elsif node_name == 'propertyDecimal'
+                value.to_f
+            elsif node_name == 'propertyDateTime'
+                DateTime.iso8601(value)
+            else
+                value
+            end
         end
     end
 end

@@ -8,6 +8,4 @@ client = CmisClient.new(
     'AWEC2\\Daniel-Admin',
     'w0rdpa$$')
 repo = client.default_repository
-puts repo.repository_info
-puts repo.get_uri_templates
-puts repo.root_folder.get_children
+repo.root_folder.get_children.each {|o| puts o.properties}
