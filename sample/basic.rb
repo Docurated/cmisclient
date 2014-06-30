@@ -8,4 +8,16 @@ client = CmisClient.new(
     'AWEC2\\Daniel-Admin',
     'w0rdpa$$')
 repo = client.default_repository
-repo.root_folder.get_children.each {|o| puts o.properties}
+doc = repo.root_folder.get_children.each do |doc|
+    name = doc.properties['cmis:name']
+    puts "downloading #{name}"
+    File.open("/home/adam/src/winnative/#{name}", 'wb') do |file|
+        doc.get_content do |chunk|
+            file.write(chunk)
+        end
+    end
+end
+
+
+
+
