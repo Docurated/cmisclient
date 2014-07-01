@@ -3,11 +3,11 @@ require 'nokogiri'
 
 class CmisClient
     module WebService
-        def get(url, opts = {})
+        def get(url, query = {})
             @log.debug("GET on #{url}")
             client = HTTPClient.new
             client.set_auth(url, @username, @password)
-            content = client.get_content(url)
+            content = client.get_content(url, query)
             Nokogiri::XML.parse(content)
         end
 

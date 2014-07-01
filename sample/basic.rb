@@ -8,16 +8,16 @@ client = CmisClient.new(
     'AWEC2\\Daniel-Admin',
     'w0rdpa$$')
 repo = client.default_repository
+token = repo.latest_change_log_token
+puts token
 doc = repo.root_folder.get_children.each do |doc|
     name = doc.properties['cmis:name']
-    puts "downloading #{name}"
-    File.open("/home/adam/src/winnative/#{name}", 'wb') do |file|
-        doc.get_content do |chunk|
-            file.write(chunk)
-        end
-    end
+    puts "found #{name}"
 end
 
+old_change_token = '1;3;3970d904-dbf0-429b-84e1-635792daa112;635394141574630000;1742'
 
+changes = repo.get_content_changes({ 'changeLogToken' => old_change_token })
 
+puts changes.collect {|c| "#{c.change_type}: #{c.id} #{c.change_time} #{c.cmis_object_id}"}
 

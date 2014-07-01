@@ -14,6 +14,8 @@ class CmisClient
         SELF_REL = 'self'
         UP_REL = 'up'
 
+        CHANGE_LOG_REL = 'http://docs.oasis-open.org/ns/cmis/link/200908/changes'
+
         # content types
         ATOM_XML_TYPE = 'application/atom+xml'
         ATOM_XML_ENTRY_TYPE = 'application/atom+xml;type=entry'

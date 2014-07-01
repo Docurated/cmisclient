@@ -6,6 +6,7 @@ require 'cmisclient/cmisobject'
 require 'cmisclient/repository'
 require 'cmisclient/folder'
 require 'cmisclient/document'
+require 'cmisclient/changeentry'
 
 class CmisClient
     include CmisClient::WebService

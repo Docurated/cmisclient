@@ -15,11 +15,18 @@ class CmisClient
         end
         
         def repository_info
-            repo_info_elem = children_by_tag_ns(@xml_doc, CMISRA_NS, 'repositoryInfo')
-            info_elems = repo_info_elem.children.select do |n| 
-                n.element? && !['capabilities', 'aclCapability'].include?(n.name)
+            if @repository_info.nil?
+                repo_info_elem = children_by_tag_ns(@xml_doc, CMISRA_NS, 'repositoryInfo')
+                info_elems = repo_info_elem.children.select do |n| 
+                    n.element? && !['capabilities', 'aclCapability'].include?(n.name)
+                end
+                @repository_info = Hash[info_elems.collect {|e| [e.name, e.content]}]
             end
-            Hash[info_elems.collect {|e| [e.name, e.content]}]
+            @repository_info
+        end
+
+        def latest_change_log_token
+            repository_info['latestChangeLogToken']
         end
         
         def root_folder
@@ -46,6 +53,24 @@ class CmisClient
                 end
             end
             @uri_templates
+        end
+
+        def get_content_changes(query = {})
+            # The following query keys are supported:
+            #     changeLogToken
+            #     includeProperties
+            #     includePolicyIDs
+            #     includeACL
+            #     maxItems
+            changes_url = get_link(CHANGE_LOG_REL)
+            result = @cmis_client.get(changes_url, query)
+            entry_elements = children_by_tag_ns(result, ATOM_NS, 'entry')
+            entry_elements.collect {|e| ChangeEntry.new(@cmis_client, @repo, nil, e)}
+        end
+
+        def get_link(rel)
+            link_elem = children_by_tag_ns(@xml_doc, ATOM_NS, 'link').find {|l| l['rel'] == rel}
+            link_elem.nil? ? nil : link_elem['href']
         end
     end
 end
