@@ -13,18 +13,8 @@ class CmisClient
         end
 
         def reload
-            templates = @repo.get_uri_templates
-            template = templates['objectbyid'].template
-            params = {
-                '{id}' => @object_id,
-                '{filter}' => '',
-                '{includeAllowableActions}' => 'false',
-                '{includePolicyIds}' => 'false',
-                '{includeRelationships}' => '',
-                '{includeACL}' => 'false',
-                '{renditionFilter}' => '' }
-            by_object_id_url = multiple_replace(template, params)
-            @xml_doc = @cmis_client.get(by_object_id_url)
+            return unless @xml_doc.nil?
+            @xml_doc = @repo.get_object_doc_xml(@object_id)
         end
 
         def cmis_object_id

@@ -31,6 +31,14 @@ class CmisClient
             node.xpath(".//ns:#{tag}", { 'ns' => ns })
         end
 
+        def my_children_by_tag_ns(ns, tag)
+            @xml_doc.xpath(".//ns:#{tag}", { 'ns' => ns })
+        end
+
+        def my_first_child_content(ns, tag)
+            my_children_by_tag_ns(ns, tag).first.children.first.content
+        end
+
         def parse_prop_value(value, node_name)
             if node_name == 'propertyId' || node_name == 'propertyString'
                 value

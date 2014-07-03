@@ -17,5 +17,13 @@ class CmisClient
         def change_time
             @change_time ||= DateTime.iso8601(children_by_tag_ns(@xml_doc, CMIS_NS, 'changeTime').first.children.first.content)
         end
+
+        def latest_document
+            if change_type == :deleted
+                nil
+            else
+                @latest_document ||= @repo.get_object_by_version_series_id(cmis_object_id)
+            end
+        end
     end
 end

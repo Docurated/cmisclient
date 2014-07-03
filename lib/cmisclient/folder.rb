@@ -20,5 +20,11 @@ class CmisClient
                 end
             end.flatten
         end
+
+        def path
+            properties['cmis:path']
+        end
+
+        def type; :folder; end
     end
 end

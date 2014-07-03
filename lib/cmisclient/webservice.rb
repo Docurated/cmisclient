@@ -11,6 +11,13 @@ class CmisClient
             Nokogiri::XML.parse(content)
         end
 
+        def post(url, body = {})
+            client = HTTPClient.new
+            client.set_auth(url, @username, @password)
+            content = client.post_content(url, body)
+            Nokogiri::XML.parse(content)
+        end
+
         def get_content(url, &block)
             client = HTTPClient.new
             client.set_auth(url, @username, @password)

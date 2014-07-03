@@ -12,6 +12,8 @@ class CmisClient
     include CmisClient::WebService
     include CmisClient::XmlUtils
 
+    attr_reader :url
+
     def initialize(url, username, password, opts = {})
         @log = Logging.logger[self.class.name.to_s.to_sym]
         @url = url
