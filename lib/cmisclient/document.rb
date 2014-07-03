@@ -14,6 +14,7 @@ class CmisClient
         add_property :created_on, 'cmis:creationDate'
         add_property :last_modified_by, 'cmis:lastModifiedBy'
         add_property :last_modified_on, 'cmis:lastModificationDate'
+        add_property :mime_type, 'cmis:contentStreamMimeType'
 
         def get_content(&block)
             # Sharepoint seems to always return content back with a Content-Transfer-Encoding of base64.

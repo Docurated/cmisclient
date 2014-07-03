@@ -49,7 +49,7 @@ class CmisClient
             elsif node_name == 'propertyDecimal'
                 value.to_f
             elsif node_name == 'propertyDateTime'
-                DateTime.iso8601(value)
+                Time.iso8601(value)
             else
                 value
             end
