@@ -46,6 +46,14 @@ class CmisClient
             @properties
         end
 
+        def acl
+            if @acl.nil?
+                acl_url = get_link(ACL_REL)
+                puts @cmis_client.get(acl_url)
+            end
+            @acl
+        end
+
         private
 
         def multiple_replace(text, mapping)
